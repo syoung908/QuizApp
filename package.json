@@ -4,7 +4,8 @@
   "description": "Udemy Quiz WebApp",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "mintest": "./node_modules/.bin/mocha --reporter min --exit",
+    "test": "./node_modules/.bin/mocha --exit",
     "start": "webpack-dev-server --open --mode development",
     "build": "webpack --mode production"
   },
@@ -19,10 +20,15 @@
   },
   "homepage": "https://github.com/syoung908/QuizApp#readme",
   "dependencies": {
+    "chai": "^4.2.0",
     "express": "^4.17.1",
+    "mocha": "^8.0.1",
     "mongoose": "^5.9.25",
+    "query-string": "^6.13.1",
+    "querymen": "^2.1.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "supertest": "^4.0.2",
     "webpack-dev-server": "^3.11.0"
   },
   "devDependencies": {

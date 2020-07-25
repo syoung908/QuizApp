@@ -1,4 +1,4 @@
-const config = require('./config')
+const config = require('./config');
 const express = require('express');
 const path = require('path'); 
 const app = express();
@@ -31,7 +31,9 @@ app.get('/', (req, res) => {
   res.sendFile(HTML_FILE)
 });
 
-app.listen(PORT, function () {
+app.listen(PORT, function() {
   console.log('Server listening on port: ' + PORT);
   console.log(`mode: ${process.env.NODE_ENV}`);
 });
+
+module.exports = app;
