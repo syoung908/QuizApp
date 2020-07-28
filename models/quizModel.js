@@ -19,6 +19,10 @@ const quizSchema =  new Schema ({
   tags: [String],
 });
 
+quizSchema.plugin(require('mongoose-keywords'), {
+  paths: ['name', 'difficulty', 'tags']
+});
+
 const quiz = mongoose.model('quiz', quizSchema);
 
 module.exports = quiz;

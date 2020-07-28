@@ -18,8 +18,81 @@ const quizUtils = require('../src/util/quizUtils');
 
 const ObjectId = require('mongoose').Types.ObjectId;
 
-exports.queryQuizzes = (req, res) => {
-  
+/** 
+ * queryQuizzes. 
+ *
+ * Returns all quizzes that are found given query parameters. If no query 
+ * parameters are given then all quizzes will be returned (up to 30 for one
+ * page by default). 
+ * 
+ * @since 1.0.0
+ * 
+ * @param  {String}  req.queryman  A queryman object that is produced by the 
+ *                                 queryman middleware that contains the parsed
+ *                                 query parameters from a query-string.
+ * 
+ * @return {Object}  JSON containing all quizzes that match the given query 
+ *                   parameters. 
+ */
+exports.queryQuizzes = async(req, res) => {
+  try {
+
+    if (req.querymen.query.difficulty) {
+      req.querymen.query.difficulty['$nin'] = req.querymen.query.difficulty['$in'];
+      delete req.querymen.query.difficulty['$in'];
+    }
+
+    quizModel.find(
+      req.querymen.query,
+      req.querymen.select,
+      req.querymen.cursor
+    )
+      .select("-__v")
+      .then(data => res.json({results: data}))
+      .catch((err) => {
+        console.error(err);
+        res.status(500).json("Database Query Failed");
+      })
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("Error Processing Request");
+  }
+}
+
+const randomQuizzes = async(req, res) => {
+  const tags = [
+    "Computer Science", "Math", "Biology", "Java", "C++",
+    "Javascript", "Python", "Algebra", "Calculus", "History",
+    "English", "Spanish", "Chemistry", "Anatomy", 
+  ];
+  const diffs = ["Easy", "Medium", "Hard"];
+
+  const getRandom = (arr, n) =>{
+    var result = new Array(n),
+        len = arr.length,
+        taken = new Array(len);
+    if (n > len)
+        throw new RangeError("getRandom: more elements taken than available");
+    while (n--) {
+        var x = Math.floor(Math.random() * len);
+        result[n] = arr[x in taken ? taken[x] : x];
+        taken[x] = --len in taken ? taken[len] : len;
+    }
+    return result;
+  }
+
+  for (let i = 0; i < 50; i++) {
+    let randomTags = getRandom(tags, 5);
+    randomTags.push("Empty");
+    let diff = diffs[Math.floor(Math.random() * diffs.length)];
+    let newRandomQuiz = new quizModel({
+      name: "Empty Quiz "+ i,
+      difficulty: diff,
+      tags: randomTags
+    })
+    newRandomQuiz.save();
+
+  }
 }
 
 
@@ -42,6 +115,8 @@ exports.getQuiz = (req, res) => {
   try {
     if (!req.params.id) {
       res.status(400).json("Missing Quiz ID");
+    } else if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+      res.status(400).json("Invalid Quiz ID");
     } else {
       questionModel.find(
         {_quizId: new ObjectId(req.params.id)})
@@ -80,8 +155,10 @@ exports.getQuiz = (req, res) => {
 exports.submitAnswers = async(req, res) => {
   try {
     let answerKey = new Map();
-    if (!req.id) {
+    if (!req.params.id) {
       res.status(400).json("Missing Quiz ID");
+    } else if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+      res.status(400).json("Invalid Quiz ID");
     } else if(!req.body.answers) {
       res.status(400).json("No Answers in Request Body");
     } else {
@@ -90,13 +167,12 @@ exports.submitAnswers = async(req, res) => {
         {_quizId: new ObjectId(req.params.id)}
       );
 
-      if (questions.length == 0) {
+      if (!questions || questions.length == 0) {
         res.status(400).json("No Questions Associated with ID");
       } else {
-        for (question in questions) {
-          answerKey.set(question._questionId, question.correct);
-        }
-
+        questions.forEach((question) => {
+          answerKey.set(question._id.toString(), question.correct);
+        });
         res.json(quizUtils.processQuiz(req.body.answers, answerKey));
       }
     }

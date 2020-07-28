@@ -2,9 +2,13 @@ const config = require('./config');
 const express = require('express');
 const path = require('path'); 
 const app = express();
+var cors = require('cors');
+app.use(cors());
+const logger = require('morgan');
+app.use(logger('dev'));
 
 // Globals
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 const DIST_DIR = path.join(__dirname, '/public'); 
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
 

@@ -6,7 +6,7 @@ var request = require('supertest');
 describe("[API] getQuiz", () => {
   it('Returned all Questions', (done) => {
     request(app)
-    .get('/api/quiz/5f1bbc28e2cd9639d08da127')
+    .get('/api/quiz/5f1cc728671d9165b0ee2f64')
     .set('Accept', 'application/json')
     .expect(200).end((err, res) => {
       should.not.exist(err);
@@ -46,7 +46,7 @@ describe("[API] getQuiz", () => {
     });
   });
 
-  it('Returns empty list on bad quizId', (done) => {
+  it('Returns empty list on valid quizId with no quiz found', (done) => {
     request(app)
     .get('/api/quiz/5f1bc778e2cd9639d08da128')
     .set('Accept', 'application/json')
@@ -55,6 +55,18 @@ describe("[API] getQuiz", () => {
       should.exist(res);
       res.status.should.equal(200);
       res.body.results.should.be.an('array').that.has.lengthOf(0);
+      done();
+    });
+  });
+
+  it('Status 400 on invalid quizId', (done) => {
+    request(app)
+    .get('/api/quiz/1')
+    .set('Accept', 'application/json')
+    .expect(400).end((err, res) => {
+      should.not.exist(err);
+      should.exist(res);
+      res.status.should.equal(400);
       done();
     });
   });
