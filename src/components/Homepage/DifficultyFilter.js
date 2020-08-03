@@ -1,3 +1,17 @@
+/**
+ * DifficultyFilter.
+ *
+ * Homepage UI Component that allows the User to filter Quiz results by toggling
+ * the difficulty buttons (Easy, Medium, Hard)
+ *
+ * @module  DifficultyFilter
+ * @file    This file defines the style and components for the DifficultyFilter
+ *          Homepage component.
+ * @author  syoung908
+ * @version 1.0.0
+ * @since   1.0.0
+ */
+
 import React from "react";
 import {makeStyles, withStyles} from '@material-ui/core/styles';
 

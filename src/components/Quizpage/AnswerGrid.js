@@ -1,3 +1,18 @@
+/**
+ * AnswerGrid.
+ *
+ * Quizpage component that displays the answers to the current question. The 
+ * user can select answers and change their answer simply by clicking. 
+ * Current implementation only works for single choice multiple choice.
+ *
+ * @module  AnswerGrid
+ * @file    This file defines the style and components for the AnswerGrid 
+ *          component.
+ * @author  syoung908
+ * @version 1.0.0
+ * @since   1.0.0
+ */
+
 import React from 'react';
 import {makeStyles, withStyles} from '@material-ui/core/styles';
 import MuiAccordion from '@material-ui/core/Accordion';
@@ -37,7 +52,6 @@ const Accordion = withStyles({
     '&$expanded': {
       margin: 'auto',
     },
-    //transition: 'all .2s ease-in-out',
     '&:hover': {
       background: '#344955 !important',
       color: 'white',
@@ -47,20 +61,21 @@ const Accordion = withStyles({
   expanded: {},
 })(MuiAccordion);
 
+/**
+ * AnswerGrid
+ * 
+ * Container that wraps the answers associated with the question. 
+ * 
+ * @since  1.0.0
+ * 
+ * @param {String} props.id  The ID string of the question.
+ */
 export default function AnswerGrid(props) {
   const classes = useStyles();
   const quizStore = useQuizStore();
 
-  const [selectedAnswer, setSelectedAnswer] = React.useState("");
-
-  const changeAnswer = (id) => {
-    setSelectedAnswer(id);
-    console.log(selectedAnswer);
-  }
-
   let answerList = [];
   if (quizStore.questions[props.id]) {
-    //console.log(quizStore.questions[props.id].answers);
     let keys = (Object.keys(quizStore.questions[props.id].answers));
     answerList = keys.map(key => (
       <AnswerSquare
@@ -68,8 +83,6 @@ export default function AnswerGrid(props) {
         id={props.id}
         keyAnswers={key}
         answer={quizStore.questions[props.id].answers[key]}
-        selected={(selectedAnswer === props.id)}
-        setSelected={changeAnswer}
       />
     ))
   }
@@ -81,11 +94,23 @@ export default function AnswerGrid(props) {
   ));
 }
 
+/**
+ * AnswerSquare 
+ * 
+ * Subcomponent that contains a single answer.
+ * 
+ * @since  1.0.0
+ * 
+ * @param {Number} props.keyAnswers  The key associated with the answer. 
+ *                                   (Generally, the letters: a, b, c, d, ...)
+ * 
+ * @param {String} props.id          The ID string of the associated question.
+ * 
+ * @param {String} props.answer      The text content of the answer.
+ */
 function AnswerSquare(props) {
   const classes = useStyles();
   const quizStore = useQuizStore();
-
-  //const [expanded, setExpanded] = React.useState(false);
 
   return useObserver(() => (
     <Accordion 
@@ -95,12 +120,8 @@ function AnswerSquare(props) {
         ? {backgroundColor: '#4AD295'}
         : {}
       }
-      //onMouseOver={() => {setExpanded(true)}}
-      //onMouseLeave={() => {setExpanded(false)}}
       onClick={()=> {
         quizStore.answers[props.id] = props.keyAnswers;
-        //console.log(quizStore.answers[props.id]);
-        //props.setSelected(props.keyAnswers);
       }}
     >
       <AccordionSummary>

@@ -1,3 +1,18 @@
+/**
+ * ResultsPage.
+ *
+ * QuizPage subcomponent that displays the results after a user submits their 
+ * answers for the current quiz. It displays a donut pie chart, a percentage
+ * correct, and the number of questions answered correctly.
+ * 
+ * @module  ResultsPage
+ * @file    This file defines the style and components for the ResultsPage 
+ *          component.
+ * @author  syoung908
+ * @version 1.0.0
+ * @since   1.0.0
+ */
+
 import React, { useEffect } from 'react';
 import {useHistory} from 'react-router-dom';
 import {makeStyles, withStyles} from '@material-ui/core/styles';
@@ -88,7 +103,7 @@ export default function ResultsPage() {
         correct: quizStore.results.correct,
         total: quizStore.results.total,
       })
-    }, 1500)
+    }, 700)
   }, [])
 
   const resultsLabel = (
@@ -146,11 +161,11 @@ export default function ResultsPage() {
               className={'donut-chart-example'}
               data={[
                 {
-                  angle: data.correct, //quizStore.results.correct,
+                  angle: data.correct, 
                   color: '#4AD295',
                 }, 
                 {
-                  angle: data.total - data.correct,//quizStore.results.total - quizStore.results.correct,
+                  angle: data.total - data.correct,
                   color: '#344955',
                 }
               ]}
@@ -158,7 +173,7 @@ export default function ResultsPage() {
               height={500}
               innerRadius={200}
               radius={250}
-              animation={"gentle"}
+              animation={true}
               colorType={"literal"}
             />
             {resultsLabel}

@@ -1,3 +1,17 @@
+/**
+ * QuizUI.
+ *
+ * Primary UI component that displays the quiz and its constituent questions
+ * Contains a QuestionPanel that displays the currently selected question as 
+ * well as a Navigation Drawer to select particular questions.
+ * 
+ * @module  QuizUI
+ * @file    This file defines the style and components for the QuizUI component.
+ * @author  syoung908
+ * @version 1.0.0
+ * @since   1.0.0
+ */
+
 import React from 'react';
 import {useHistory} from 'react-router-dom';
 import clsx from 'clsx';
@@ -40,7 +54,6 @@ const useStyles = makeStyles((theme) => ({
     flexShrink: 0,
   },
   drawerPaper: {
-    //width: drawerWidth,
     flexGrow: 1,
   },
   content: {
@@ -96,7 +109,6 @@ const StyledTab = withStyles((theme) => ({
     '&:hover': {
       background: theme.palette.primary.main,
       color: theme.palette.primary.contrastText,
-      //transform: 'scale(1.015)',
       opacity: 1,
     },
   },
@@ -193,6 +205,7 @@ export default function QuizUI() {
     }
   }
 
+  // Handles selection for Question navigation drawer
   const handleChange = (event, newValue) => {
     quizStore.currentQuestionIndex = newValue;
   };
@@ -210,6 +223,10 @@ export default function QuizUI() {
     </StyledButton>
   )
 
+  /**
+   * Displayed when no questions are found in the database or the client fails
+   * to load any queries
+   */
   const emptyQuizPanel = (
     <Card className={classes.emptyPanel} variant={'outlined'}>
       <CardHeader
@@ -263,7 +280,6 @@ export default function QuizUI() {
         {quizStore.length !== 0 && <SwipeableViews
           axis={theme.direction === 'ltr' ? 'x-reverse' : 'x'}
           index={quizStore.currentQuestionIndex}
-          //onChangeIndex={handleChangeIndex}
         >
           {questionPanels}
         </SwipeableViews>}

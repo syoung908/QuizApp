@@ -8,6 +8,7 @@
  * @file    This file defines functions that handle various API requests 
  *          regarding quizzes
  * @author  syoung908
+ * @version 1.0.0
  * @since   1.0.0
  */
 

@@ -1,3 +1,16 @@
+/**
+ * LoadingWheel.
+ *
+ * Defines the components and JSS styling for the site wide loading wheel.
+ *
+ * @module  LoadingWheel
+ * @file    Defines the components and JSS styling for the site wide loading 
+ *          wheel.
+ * @author  syoung908
+ * @since   1.0.0
+ * @version 1.0.0
+ */
+
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 
@@ -42,8 +55,8 @@ const useStyles = makeStyles((theme) => ({
     borderColor: 'transparent',
     animation: '2s $fancy infinite alternate',
 
-    borderTopColor: '#4AD295',//'$#979fd0',
-    borderBottomColor: '#4AD295',//'$#979fd0',
+    borderTopColor: '#4AD295',
+    borderBottomColor: '#4AD295',
     animationDelay: '1s',
   },
 

@@ -1,3 +1,16 @@
+/**
+ * Navbar.
+ *
+ * Navigation Bar for the Homepage component. For the current implementation, 
+ * it contains only a logo that redirects the user to the Homepage.
+ *
+ * @module  Navbar
+ * @file    This file defines the style and components for the Navbar component
+ * @author  syoung908
+ * @version 1.0.0
+ * @since   1.0.0
+ */
+
 import React from 'react';
 import {useHistory} from 'react-router-dom';
 import {makeStyles, createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
@@ -49,7 +62,6 @@ const getMuiTheme = () => createMuiTheme({
   }
 });
 
-//<img src={HomeIcon} height="50" width="50" alt="Logo"/>
 export default function Navbar(props) {
   const classes = useStyles();
   const history = useHistory();

@@ -1,7 +1,23 @@
+/**
+ * Homepage.
+ *
+ * Primary UI component that represents the Homepage of the WebApp. Contains a
+ * text search bar, a difficulty filter, a random quiz button, and a table to 
+ * display quiz results.
+ *
+ * @module  Homepage
+ * @file    This file defines the style and components for the Homepage 
+ *          component.
+ * @author  syoung908
+ * @version 1.0.0
+ * @since   1.0.0
+ */
+
 import React, { Fragment, useEffect } from 'react';
 import {useHistory} from 'react-router-dom';
 import { Waypoint } from "react-waypoint";
-import {makeStyles, MuiThemeProvider, ThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import {makeStyles, MuiThemeProvider, 
+        ThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
 import Paper from '@material-ui/core/Paper';
 import MUIDataTable from "mui-datatables";
@@ -18,7 +34,7 @@ import LoadingWheel from '../../clientUtil/LoadingWheel';
 import Navbar from './Navbar';
 import ToolBar from './Toolbar';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -37,18 +53,11 @@ const useStyles = makeStyles((theme) => ({
   },
 
   row: {
-    /*
-    animationName: '$animateIn',
-    animationDuration: '500ms',
-    animationDelay: 'calc(var(--animation-order) * 250ms)',
-    animationFillMode: 'both',
-    animationTimingFunction: 'ease-in-out',
-    */
-    animation:'$animateIn 500ms ease-in-out calc(var(--animation-order) * 250ms) both, $gradAnimation 10s ease infinite',
+    animation:'$animateIn 500ms ease-in-out calc(var(--animation-order) * '+ 
+              '250ms) both, $gradAnimation 10s ease infinite',
     "&:hover": {
       background: 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
       backgroundSize: '400% 400%',
-      //animation: '$gradAnimation 15s ease infinite',
       animationDelay: 0,
       color: 'white',
       fontWeight: 'bold',
@@ -79,6 +88,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// MUI Datatable Styling Override
 const getMuiTheme = () => createMuiTheme({
   overrides: {
     MUIDataTableHeadCell: {
@@ -112,12 +122,25 @@ export default function Homepage() {
 
   const [data, setData] = React.useState([]);
 
+  /**
+   * fetchQuizzes
+   * 
+   * Fetches quizzes from the database that match the current options specified
+   * in the mobX store searchStore. Is triggered on the initial Homepage 
+   * component mount and whenever a searchBar search is entered or a difficulty
+   * in the Difficulty Filter component is toggled.
+   * 
+   * @since   1.0.0
+   * 
+   * @return {String} An error message if an error has occurred. Null otherwise.
+   */
   const fetchQuizzes = async() => {
     try {
       setData([]);
       searchStore.loading = true;
       searchStore.page =  1;
-      const response = await timeoutFetch('/api/quizzes'+ searchStore.queryString(), 'GET');
+      const response = await timeoutFetch('/api/quizzes'+ 
+                                           searchStore.queryString(), 'GET');
         if (response.status === 200) {
           const datajson = await response.json();
           setData(datajson.results);
@@ -134,7 +157,6 @@ export default function Homepage() {
     }
   };
 
-    
   useEffect(() => {
     fetchQuizzes()
     .then(err => {
@@ -142,23 +164,37 @@ export default function Homepage() {
     });
   }, []);
 
+  /**
+   * fetchNextPage.
+   * 
+   * Fetches the next page of quizzes that match the current options specified
+   * in the mobX store searchStore. The page is reset upon any changes to 
+   * these parameters. 
+   * 
+   * @since  1.0.0
+   * 
+   * @param {Number} nextpage  The index of the requested next page. If the page
+   *                           has already been queried, the last page has 
+   *                           already been queried, or no more pages exist,
+   *                           the request will be ignored.
+   */
   const fetchNextPage = async(nextpage) => {
     try {
+      // Return if the last page has already been found
       if (searchStore.lastPage) {
-        console.log(data.length);
-        console.log("LAST PAGE")
         return;
       }
 
+      // Return if the requested page has already been queried
       if (nextpage === searchStore.page) {
-        console.log('returning');
         return;
       } else {
-        console.log(nextpage);
         searchStore.page = nextpage;
       }
 
-      const response = await timeoutFetch('/api/quizzes'+ searchStore.queryString(), 'GET');
+      // Fetch the next page
+      const response = await timeoutFetch('/api/quizzes'+ 
+                                          searchStore.queryString(), 'GET');
       if (response.status === 200) {
         const datajson = await response.json();
         setData([...data, ...datajson.results]);
@@ -173,10 +209,22 @@ export default function Homepage() {
     }
   }
 
+  /**
+   * openQuiz
+   * 
+   * Callback function that opens the quiz associated with the row that the 
+   * user clicked on.
+   * 
+   * @since  1.0.0
+   * 
+   * @param {Object} rowData   All data members of the clicked row
+   * @param {Object} rowState  The current state of the clicked row
+   */
   const openQuiz = (rowData, rowState) => {
     history.push('/quiz/' + rowData[4])
   }
 
+  // Loading Screen
   const loadingComponent = (
     <div style={{
       width: '100%', 
@@ -189,6 +237,7 @@ export default function Homepage() {
     </div>
   );
 
+  // Custom column that displays the tags of the row as a Chip
   const difficultyChip = (value, tableMeta, updateValue) => {
     let color="primary"
     switch (value.toLowerCase()) {
@@ -213,6 +262,7 @@ export default function Homepage() {
     );
   }
 
+  // Custom column that displays the tags of the row as Chips
   const tagChip = (value, tableMeta, updateValue) => {
     let chips = [];
     value.forEach(tag => {
@@ -239,6 +289,15 @@ export default function Homepage() {
     );
   }
 
+  const parseDifficulty = (difficulty) => {
+    switch(difficulty){
+      case 'Easy': return 1;
+      case 'Medium': return 2;
+      case 'Hard': return 3;
+    }
+  }
+
+  // MUI datatables custom columns options
   const columns = [
     {
       name: "name",
@@ -260,13 +319,21 @@ export default function Homepage() {
       label: "Tags",
       options: {
         customBodyRender: tagChip
-      }
+      },
+      sort: false,
     },
     {
       name: "difficulty",
       label: "Difficulty",
       options: {
-        customBodyRender: difficultyChip
+        customBodyRender: difficultyChip,
+        sortCompare: (order) => {
+          return (obj1, obj2) => {
+            let val1 = parseDifficulty(obj1.data);
+            let val2 = parseDifficulty(obj2.data);
+            return (val1 - val2) * (order === 'asc' ? 1 : -1);
+          };
+        }
       }
     },
     {
@@ -295,6 +362,7 @@ export default function Homepage() {
     }
   ]
 
+  // MUI Datatables Options
   const options = {
     elevation: 0,
     fixedHeader: true,
@@ -307,7 +375,6 @@ export default function Homepage() {
     customFooter: null,
     pagination: false,
     responsive: "standard",
-    //responsive: "simple",
     selectableRows: false,
     tableBodyHeight:'500px',
     tableBodyWidth: '100%',
@@ -316,16 +383,29 @@ export default function Homepage() {
       body: {
         noMatch: "No Quizzes Found",
       },
-    }, 
+    },
+    setRowProps: (row, dataIndex, rowIndex) => {
+      return {
+        className: classes.row,
+        style: {'--animation-order': rowIndex % 15}
+      };
+    }
   }
 
-  options.setRowProps = (row, dataIndex, rowIndex) => {
-    return {
-      className: classes.row,
-      style: {'--animation-order': rowIndex % 15}
-    };
-  }
 
+  /**
+   * wayPointName
+   * 
+   * @since   1.0.0
+   * 
+   * Custom row value that creates a label with a Waypoint that will trigger
+   * a request to fetch the next page on entry. Is used to implement infinite
+   * scrolling. It will attatch a waypoint to the current last element in the
+   * table. 
+   * 
+   * @param  {Number}  dataIndex   The index of the data in the original data
+   * @param  {Number}  rowIndex    The index of the row in the table
+   */
   const wayPointName = (dataIndex, rowIndex) => {
     let value = data[dataIndex].name
     if (rowIndex === data.length - 1) {
@@ -333,7 +413,6 @@ export default function Homepage() {
         <Fragment>
           <Waypoint
             onEnter={() => {
-              console.log("WAYPOINT REACHED for " + (Math.floor((rowIndex+1) / PAGE_SIZE) + 1));
               fetchNextPage(Math.floor((rowIndex+1) / PAGE_SIZE) + 1);
             }}
           />
@@ -360,7 +439,6 @@ export default function Homepage() {
           {searchStore.loading && loadingComponent}
           {!searchStore.loading &&
             <MUIDataTable 
-              //data={searchStore.quizData}
               data={data}  
               columns={columns} 
               options={options} 

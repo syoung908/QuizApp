@@ -1,7 +1,41 @@
+/**
+ * Fetch with timeout.
+ *
+ * Small wrapper function to make fetch requests with a timeout.
+ *
+ * @module  TimeoutFetch
+ * @file    Wrapper function to fetch with a timeout
+ * @author  syoung908
+ * @since   1.0.0
+ * @version 1.0.0
+ */
+
 import 'abortcontroller-polyfill';
 import "regenerator-runtime/runtime";
 
-//30000
+/** 
+ * timeoutFetch. 
+ *
+ * Calls fetch with the given parameters and a timeout in the case the server 
+ * does not respond or a network error has occurred.  
+ * 
+ * @since 1.0.0
+ * 
+ * @param  {String}  url        A string containing the url to fetch from.
+ * 
+ * @param  {String}  method     The HTTP request method to be performed.
+ *                              (GET, POST, PUT, DELETE, ...)
+ * 
+ * @param  {Object}  postbody   (OPTIONAL) An object that will be the body of 
+ *                              a POST request. A non-null body is assumed to be
+ *                              a POST request. 
+ * 
+ * @param  {Number}  timeout    The number of milliseconds to wait before the 
+ *                              request will be aborted and return an ABORTERROR
+ * 
+ * @return {Promise<Object>}  A promise that will resolve upon a response from 
+ *                            the destination 
+ */
 export const timeoutFetch = (url, method, postbody, timeout = 30000) => {
   const controller = new AbortController();
   const signal = controller.signal;
@@ -25,21 +59,4 @@ export const timeoutFetch = (url, method, postbody, timeout = 30000) => {
   setTimeout(() => controller.abort(), timeout);
 
   return(fetchPromise);
-}
-
-
-export const serverRequest = async(url, method, postbody, action, finalAction) => {
-  try {
-    const response = await timeoutFetch(url, method, postbody);
-    const datajson = await response.json();
-    if (response.status === 200) {
-      if (action) action(datajson);
-    } else {
-      console.error("Error status: " + response.status + datajson);
-    }
-  } catch(err) {
-    console.error(err);
-  } finally{
-    if (finalAction) finalAction();
-  }
 }

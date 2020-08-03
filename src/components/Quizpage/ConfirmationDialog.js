@@ -1,3 +1,18 @@
+/**
+ * ConfirmationDialog.
+ *
+ * Quizpage component popup that is displayed when the user submits their quiz 
+ * with questions unanswered. It allows the user to confirm their choice with 
+ * this popup window.
+ *
+ * @module  ConfirmationDialog
+ * @file    This file defines the style and components for the 
+ *          ConfirmationDialog component.
+ * @author  syoung908
+ * @version 1.0.0
+ * @since   1.0.0
+ */
+
 import React from "react";
 import {withStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -28,6 +43,7 @@ export default function ConfirmationDialog() {
   const quizStore = useQuizStore();
   const {enqueueSnackbar, } = useSnackbar();
 
+  // Callback for submit button
   const handleSubmit = () => {
     quizStore.warningDialog = false;
     quizStore.submitAnswers()
@@ -36,6 +52,7 @@ export default function ConfirmationDialog() {
     });
   };
 
+  // Callback for cancel button
   const handleClose = () => {
     quizStore.warningDialog = false;
   };

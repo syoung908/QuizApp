@@ -1,6 +1,21 @@
+/**
+ * QuizNavbar.
+ *
+ * Navigation Bar for the QuizPage component. In addition to the Logo the 
+ * Bavbar contains a progress bar that fill based on the number of questions
+ * completed and a submit button that submits the quiz to be scored.
+ *
+ * @module  QuizNavbar
+ * @file    This file defines the style and components for the QuizNavbar 
+ *          component.
+ * @author  syoung908
+ * @version 1.0.0
+ * @since   1.0.0
+ */
 import React from 'react';
 import {useHistory} from 'react-router-dom';
-import {makeStyles, createMuiTheme, ThemeProvider, withStyles} from '@material-ui/core/styles';
+import {makeStyles, createMuiTheme, 
+        ThemeProvider, withStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -32,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
   },
   statusBar: {
     maxWidth:'850px', 
-    //backgroundColor: 'white',
   },
   statusContent: {
     display:  'flex',
@@ -142,22 +156,3 @@ export default function Navbar(props) {
     </AppBar>
   ));
 }
-/*
-<Grid container
-  direction="row"
-  justify="space-between"
-  alignItems="center"
-  spacing={2}
->
-  <Grid item xs style={{display: 'flex', justifyContent: 'center'}}>
-    <BorderLinearProgress
-      variant="determinate" 
-      value={quizStore.completeRate}
-    />
-  </Grid>
-  <Grid item xs={4} style={{display: 'flex', justifyContent: 'flex-end'}}>
-    <SubmitButton/>
-  </Grid>
-</Grid>
-
-*/

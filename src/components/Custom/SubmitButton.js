@@ -1,3 +1,15 @@
+/**
+ * SubmitButton.
+ *
+ * Custom UI Component that will animate when the user completes all questions
+ * in the quiz.
+ *
+ * @module  SubmitButton
+ * @file    Contains JSS Styling and Subcomponents for the Submit Button
+ * @author  syoung908
+ * @since   1.0.0
+ */
+
 import React from 'react';
 import clsx from 'clsx';
 import {makeStyles} from '@material-ui/core/styles';
@@ -37,8 +49,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     position: 'relative',
     zIndex: 0,
-    //width: '100%',
-    //height: '100%',
     borderRadius: '10px',
     overflow: 'hidden',
     padding: '10px',
@@ -83,9 +93,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-//backgroundImage: 'linear-gradient(#399953, #399953), linear-gradient(#fbb300, #fbb300), linear-gradient(#d53e33, #d53e33), linear-gradient(#377af5, #377af5)',
-
-export default function ButtonBases(props) {
+export default function SubmitButton() {
   const classes = useStyles();
   const quizStore = useQuizStore();
   const {enqueueSnackbar, } = useSnackbar();
@@ -105,7 +113,8 @@ export default function ButtonBases(props) {
         onClick={handleSubmit}
       >
       <div className={clsx(classes.container,
-          {[classes.activated]: quizStore.remaining === 0 && quizStore.length !== 0 && !quizStore.submitted},
+          {[classes.activated]: quizStore.remaining === 0 
+            && quizStore.length !== 0 && !quizStore.submitted},
           {[classes.disabled]: quizStore.submitted}
       )}
       >

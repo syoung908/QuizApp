@@ -1,3 +1,18 @@
+/**
+ * Quizpage.
+ *
+ * Container component that displays the quiz and its constituent questions
+ * Will also display the Results page when the user submits their answers. This
+ * component contains the QuizUI and the ResultsPage components.
+ * 
+ * @module  Quizpage
+ * @file    This file defines the style and components for the Quizpage 
+ *          component.
+ * @author  syoung908
+ * @version 1.0.0
+ * @since   1.0.0
+ */
+
 import React, {useEffect} from 'react';
 import {makeStyles, ThemeProvider} from '@material-ui/core/styles';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -17,13 +32,11 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexGrow: 1,
     flexDirection: 'column',
-    //alignItems: 'center',
     minHeight: '98vh',
     overflow: 'hidden',
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
-    //color: '#fff',
   },
 }));
 

@@ -1,3 +1,18 @@
+/**
+ * QuestionPanel.
+ *
+ * Primary QuizPage component that contains all subcomponents for each question.
+ * The QuestionPanel contains the question and all answers associated with that
+ * question. Each question has their own QuestionPanel.
+ *
+ * @module  QuestionPanel
+ * @file    This file defines the style and components for the QuestionPanel
+ *          component.
+ * @author  syoung908
+ * @version 1.0.0
+ * @since   1.0.0
+ */
+
 import React from 'react';
 import {makeStyles, withStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -57,10 +72,12 @@ export default function QuestionPanel(props) {
   const quizStore = useQuizStore();
   const {enqueueSnackbar, } = useSnackbar();
 
+  // Go to previous question
   const handlePrev = () => {
     quizStore.currentQuestionIndex--;
   }
 
+  // Go to next question, or submit if last question.
   const handleNext = () => {
     if (quizStore.currentQuestionIndex !== quizStore.length - 1) {
       quizStore.currentQuestionIndex++;
@@ -124,5 +141,3 @@ export default function QuestionPanel(props) {
     </Card>
   ));
 }
-
-//{(quizStore.hasData)? quizStore.questions.id.question : ""}

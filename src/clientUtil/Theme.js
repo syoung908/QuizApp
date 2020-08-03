@@ -1,3 +1,14 @@
+/**
+ * MaterialUI Theme
+ *
+ * Defines the site wide theme.
+ *
+ * @module  Theme
+ * @file    Defines colors, fonts, to be used for style site wide.
+ * @author  syoung908
+ * @since   1.0.0
+ * @version 1.0.0
+ */
 import {createMuiTheme} from '@material-ui/core/styles';
 
 export const theme = createMuiTheme({

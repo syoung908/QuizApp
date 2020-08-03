@@ -1,3 +1,17 @@
+/**
+ * Toolbar.
+ *
+ * Container component that wraps the SearchBar, DifficultyFilter, and the 
+ * random quiz button.
+ *
+ * @module  Toolbar
+ * @file    This file defines the style and components for the Toolbar
+ *          component.
+ * @author  syoung908
+ * @version 1.0.0
+ * @since   1.0.0
+ */
+
 import React from 'react';
 import {useHistory} from 'react-router-dom';
 import {makeStyles} from '@material-ui/core/styles';
@@ -29,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
     backgroundColor: '#344955',
     '&:hover': {
-      //background: 'linear-gradient(45deg, rgba(74,210,149,1) 0%, rgba(68,170,130,1) 45%, rgba(57,106,100,1) 65%, rgba(52,73,85,1) 100%);',
       background: 'linear-gradient(45deg, rgba(52,73,85,1) 0%, rgba(57,106,100,1) 45%, rgba(68,170,130,1) 65%, rgba(74,210,149,1) 100%);',
       backgroundSize: '400% 400%',
       animation: `$gradAnimation 10s ease infinite`,
@@ -53,9 +66,19 @@ export default function ToolBar(props) {
   const history = useHistory();
   const {enqueueSnackbar, } = useSnackbar();
 
+
+  /**
+   * getRandomQuiz
+   * 
+   * Fetches a random quiz from the database and then redirects the user to 
+   * that random quiz.
+   * 
+   * @return {String} An error message if an error has occurred. Null otherwise.
+   */
   const getRandomQuiz = async() => {
     try {
-      const response = await timeoutFetch('http://localhost:8080/api/random', 'GET');
+      const response = await timeoutFetch('http://localhost:8080/api/random', 
+                                          'GET');
         if (response.status === 200) {
           const datajson = await response.json();
           history.push('/quiz/' + datajson.results._id)
@@ -69,6 +92,7 @@ export default function ToolBar(props) {
     } 
   }
 
+  // Callback function for random button onClick
   const randomHandler = () => {
     getRandomQuiz()
     .then(err => {
@@ -76,6 +100,7 @@ export default function ToolBar(props) {
     });
   }
 
+  // Random button
   const randomButton = (
     <div className={classes.randomButtonContainer}>
       <Button

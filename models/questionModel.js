@@ -7,6 +7,7 @@
  * @file    This file defines the question schema.
  * @author  syoung908
  * @since   1.0.0
+ * @version 1.0.0
  */
 
 let mongoose = require('mongoose');

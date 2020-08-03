@@ -3,10 +3,10 @@
  *
  * Defines the routes for the server API.
  *
- * @module  quizModel
  * @file    Routes for server API.
  * @author  syoung908
  * @since   1.0.0
+ * @version 1.0.0
  */
 
 var express = require('express');
