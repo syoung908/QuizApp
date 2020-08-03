@@ -9,7 +9,7 @@ app.use(logger('dev'));
 
 // Globals
 const PORT = process.env.PORT || 8080;
-const DIST_DIR = path.join(__dirname, '/public'); 
+const DIST_DIR = path.join(__dirname, '/dist'); 
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
 
 // Establish Database Connection

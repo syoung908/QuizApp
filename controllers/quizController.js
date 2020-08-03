@@ -36,11 +36,15 @@ const ObjectId = require('mongoose').Types.ObjectId;
  */
 exports.queryQuizzes = async(req, res) => {
   try {
-
+    // Replace $in with $nin (appears to be package bug)
     if (req.querymen.query.difficulty) {
       req.querymen.query.difficulty['$nin'] = req.querymen.query.difficulty['$in'];
       delete req.querymen.query.difficulty['$in'];
     }
+    
+    //console.log(req.querymen.query);
+    //console.log(req.querymen.select);
+    //console.log(req.querymen.cursor);
 
     quizModel.find(
       req.querymen.query,
@@ -51,11 +55,13 @@ exports.queryQuizzes = async(req, res) => {
       .then(data => res.json({results: data}))
       .catch((err) => {
         console.error(err);
-        res.status(500).json("Database Query Failed");
+        res.statusMessage = "Database Query Failed";
+        res.status(500).end();
       })
   } catch (err) {
     console.error(err);
-    res.status(500).json("Error Processing Request");
+    res.statusMessage = "Error Processing Request";
+    res.status(500).end();
   }
 }
 
@@ -95,6 +101,34 @@ const randomQuizzes = async(req, res) => {
   }
 }
 
+/** 
+ * queryQuizzes. 
+ *
+ * Returns a random quiz from the database.
+ * 
+ * @since 1.0.0
+ * 
+ * @return {Object}  JSON containing aa single random quiz. 
+ */
+exports.getRandomQuiz = async(req, res) => {
+  try {
+    const count =  await quizModel.countDocuments();
+    var random = Math.floor(Math.random() * count);
+
+    quizModel.findOne().skip(random)
+    .then(data => res.json({results: data}))
+    .catch((err) => {
+      console.error(err);
+      res.statusMessage = "Database Query Failed";
+      res.status(500).end();
+    })
+  } catch (err) {
+    console.error(err);
+    res.statusMessage = "Error Processing Request";
+    res.status(500);
+  }
+}
+
 
 /** 
  * getQuiz. 
@@ -114,9 +148,11 @@ const randomQuizzes = async(req, res) => {
 exports.getQuiz = (req, res) => {
   try {
     if (!req.params.id) {
-      res.status(400).json("Missing Quiz ID");
+      res.statusMessage = "Missing Quiz ID";
+      res.status(400).end();
     } else if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-      res.status(400).json("Invalid Quiz ID");
+      res.statusMessage = "Invalid Quiz ID";
+      res.status(400).end();
     } else {
       questionModel.find(
         {_quizId: new ObjectId(req.params.id)})
@@ -125,12 +161,14 @@ exports.getQuiz = (req, res) => {
         .then(data => res.json({results: data}))
         .catch(err => {
           console.error(err);
-          res.status(500).json("Database Query Failed");
+          res.statusMessage = "Database Query Failed"
+          res.status(500).end();
       });
     }
   } catch (err) {
     console.error(err);
-    res.status(500).json("Error Processing Request");
+    res.statusMessage = "Error Processing Request";
+    res.status(500);
   }
 }
 
@@ -156,11 +194,14 @@ exports.submitAnswers = async(req, res) => {
   try {
     let answerKey = new Map();
     if (!req.params.id) {
-      res.status(400).json("Missing Quiz ID");
+      res.statusMessage = "Missing Quiz ID";
+      res.status(400).end();
     } else if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-      res.status(400).json("Invalid Quiz ID");
+      res.statusMessage = "Invalid Quiz ID";
+      res.status(400).end();
     } else if(!req.body.answers) {
-      res.status(400).json("No Answers in Request Body");
+      res.statusMessage = "No Answers in Request Body";
+      res.status(400).end();
     } else {
       // Generate answer key
       let questions = await questionModel.find(
@@ -168,7 +209,8 @@ exports.submitAnswers = async(req, res) => {
       );
 
       if (!questions || questions.length == 0) {
-        res.status(400).json("No Questions Associated with ID");
+        res.statusMessage = "No Questions Associated with ID";
+        res.status(400).end()
       } else {
         questions.forEach((question) => {
           answerKey.set(question._id.toString(), question.correct);
@@ -178,6 +220,7 @@ exports.submitAnswers = async(req, res) => {
     }
   } catch (err) {
     console.error(err);
-    res.status(500).json("Error Processing Request");
+    res.statusMessage = "Error Processing Request";
+    res.status(500);
   }
 }

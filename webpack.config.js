@@ -1,4 +1,5 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const path = require('path');
 
 module.exports = {
   module: {
@@ -17,8 +18,20 @@ module.exports = {
             loader: "html-loader"
           }
         ]
-      }
+      },
+      //{ test: /\.svg$/, loader: 'svg-inline-loader' }
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack'],
+      },
     ]
+  },
+  output: { 
+    path: path.join(__dirname, 'dist'),
+    publicPath: '/',
+  },
+  devServer: {
+    contentBase: './dist',
   },
   plugins: [
     new HtmlWebPackPlugin({
