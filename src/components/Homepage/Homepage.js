@@ -26,7 +26,6 @@ import {theme} from '../../clientUtil/Theme';
 import {useSnackbar} from 'notistack';
 import snackbarSettings from '../../clientUtil/snackbarSettings';
 
-import {timeoutFetch} from '../../clientUtil/TimeoutFetch';
 import {useSearchStore} from "../../stores/searchStore";
 import {useObserver} from "mobx-react";
 
@@ -120,94 +119,12 @@ export default function Homepage() {
   const {enqueueSnackbar, } = useSnackbar();
   const PAGE_SIZE = 15;
 
-  const [data, setData] = React.useState([]);
-
-  /**
-   * fetchQuizzes
-   * 
-   * Fetches quizzes from the database that match the current options specified
-   * in the mobX store searchStore. Is triggered on the initial Homepage 
-   * component mount and whenever a searchBar search is entered or a difficulty
-   * in the Difficulty Filter component is toggled.
-   * 
-   * @since   1.0.0
-   * 
-   * @return {String} An error message if an error has occurred. Null otherwise.
-   */
-  const fetchQuizzes = async() => {
-    try {
-      setData([]);
-      searchStore.loading = true;
-      searchStore.page =  1;
-      const response = await timeoutFetch('/api/quizzes'+ 
-                                           searchStore.queryString(), 'GET');
-        if (response.status === 200) {
-          const datajson = await response.json();
-          setData(datajson.results);
-          searchStore.lastPage = (datajson.results.length < PAGE_SIZE);
-        } else {
-          return(`HTTP Error ${response.status}: ${response.statusText}`);
-        }
-    } catch (err) {
-      return (err.name === 'AbortError') 
-        ? 'Request Timed Out' 
-        : `Fetch Error: ${err}`;
-    } finally {
-      searchStore.loading = false;
-    }
-  };
-
   useEffect(() => {
-    fetchQuizzes()
+    searchStore.fetchQuizzes()
     .then(err => {
       if (err) enqueueSnackbar(`${err}`, snackbarSettings('error'));
     });
   }, []);
-
-  /**
-   * fetchNextPage.
-   * 
-   * Fetches the next page of quizzes that match the current options specified
-   * in the mobX store searchStore. The page is reset upon any changes to 
-   * these parameters. 
-   * 
-   * @since  1.0.0
-   * 
-   * @param {Number} nextpage  The index of the requested next page. If the page
-   *                           has already been queried, the last page has 
-   *                           already been queried, or no more pages exist,
-   *                           the request will be ignored.
-   */
-  const fetchNextPage = async(nextpage) => {
-    try {
-      // Return if the last page has already been found
-      if (searchStore.lastPage) {
-        return;
-      }
-
-      // Return if the requested page has already been queried
-      if (nextpage === searchStore.page) {
-        return;
-      } else {
-        searchStore.page = nextpage;
-      }
-
-      // Fetch the next page
-      const response = await timeoutFetch('/api/quizzes'+ 
-                                          searchStore.queryString(), 'GET');
-      if (response.status === 200) {
-        const datajson = await response.json();
-        setData([...data, ...datajson.results]);
-        searchStore.lastPage = (datajson.results.length < PAGE_SIZE);
-      } else {
-        return(`HTTP Error ${response.status}: ${response.statusText}`);
-      }
-    } catch (err) {
-      return (err.name === 'AbortError') 
-        ? 'Request Timed Out' 
-        : `Fetch Error: ${err}`;
-    }
-  }
 
   /**
    * openQuiz
@@ -407,13 +324,15 @@ export default function Homepage() {
    * @param  {Number}  rowIndex    The index of the row in the table
    */
   const wayPointName = (dataIndex, rowIndex) => {
-    let value = data[dataIndex].name
-    if (rowIndex === data.length - 1) {
+    let value = searchStore.data[dataIndex].name
+    if (rowIndex === searchStore.data.length - 1) {
       return (
         <Fragment>
           <Waypoint
             onEnter={() => {
-              fetchNextPage(Math.floor((rowIndex+1) / PAGE_SIZE) + 1);
+              searchStore.fetchNextPage(
+                Math.floor((rowIndex+1) / PAGE_SIZE) + 1
+              );
             }}
           />
           {value}
@@ -431,15 +350,13 @@ export default function Homepage() {
       <div style={{height: '94px', width: '100%'}}/>
       <ThemeProvider theme={theme}>
         <div className={classes.contentContainer}>
-          <ToolBar
-            fetchQuizzes={fetchQuizzes}
-          />
+          <ToolBar/>
           <Paper className={classes.tableContainer} variant="outlined">
           <MuiThemeProvider theme={getMuiTheme()}>
           {searchStore.loading && loadingComponent}
           {!searchStore.loading &&
             <MUIDataTable 
-              data={data}  
+              data={searchStore.data}  
               columns={columns} 
               options={options} 
             />

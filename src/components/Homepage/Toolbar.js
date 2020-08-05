@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ToolBar(props) {
+export default function ToolBar() {
   const classes = useStyles();  
   const history = useHistory();
   const {enqueueSnackbar, } = useSnackbar();
@@ -77,7 +77,7 @@ export default function ToolBar(props) {
    */
   const getRandomQuiz = async() => {
     try {
-      const response = await timeoutFetch('http://localhost:8080/api/random', 
+      const response = await timeoutFetch('/api/random', 
                                           'GET');
         if (response.status === 200) {
           const datajson = await response.json();
@@ -121,10 +121,10 @@ export default function ToolBar(props) {
     <Paper className={classes.root} elevation={0} >
       <Grid container spacing={2} alignItems="flex-end" justify="space-between">
         <Grid item xs={4}>
-          <SearchBar fetchQuizzes={props.fetchQuizzes}/>
+          <SearchBar/>
         </Grid>
         <Grid item xs={4}>
-          <DifficultyFilter fetchQuizzes={props.fetchQuizzes}/>
+          <DifficultyFilter/>
         </Grid>
         <Grid item xs={3}>
           {randomButton}

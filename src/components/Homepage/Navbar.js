@@ -62,7 +62,7 @@ const getMuiTheme = () => createMuiTheme({
   }
 });
 
-export default function Navbar(props) {
+export default function Navbar() {
   const classes = useStyles();
   const history = useHistory();
 

@@ -32,14 +32,23 @@
 exports.processQuiz = (userAnswers, answerKey) => {
   let numCorrect = 0;
   let corrections = {};
+  let answerKeyCopy = new Map(answerKey);
  
   //Check Answers
-  for(id in userAnswers) {
+  for (let id in userAnswers) {
     if (answerKey.get(id) == userAnswers[id]) {
       numCorrect++;
     } else if (answerKey.has(id)){
       corrections[id] = answerKey.get(id);
     }
+    answerKeyCopy.delete(id);
+  }
+
+  // Add missing answers to corrections list
+  if (answerKey.size !== 0){
+    answerKeyCopy.forEach((value, key)=> {
+      corrections[key] = value;
+    })
   }
 
   // Return results as object

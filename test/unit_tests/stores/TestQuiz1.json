@@ -1,0 +1,144 @@
+{
+  "results": [
+      {
+          "question": "The default value of a static integer variable in a class in java is",
+          "type": "Select Single",
+          "media": "None",
+          "_id": "5f1bc778e2cd9639d08da128",
+          "answers": {
+              "a": "0",
+              "b": "1",
+              "c": "Garbage value",
+              "d": "Null",
+              "e": "-1"
+          },
+          "_quizId": "5f1cc728671d9165b0ee2f64"
+      },
+      {
+          "question": "Multiple inheritance means:  ",
+          "type": "Select Single",
+          "media": "None",
+          "_id": "5f1bcf2ce2cd9639d08da129",
+          "answers": {
+              "a": "one class inheriting from more super classes",
+              "b": "more classes inheriting from one super class",
+              "c": "more classes inheriting from more super classes",
+              "d": "None of the above",
+              "e": "(a) and (b) above"
+          },
+          "_quizId": "5f1cc728671d9165b0ee2f64"
+      },
+      {
+          "question": "Which statement is not true in the java language ",
+          "type": "Select Single",
+          "media": "None",
+          "_id": "5f1bd02ae2cd9639d08da12a",
+          "answers": {
+              "a": "A public member of a class can be accessed in all the packages",
+              "b": "A private member of a class cannot be accessed by methods of the same class",
+              "c": "A private member of a class cannot be accessed from its derived class",
+              "d": "A protected member of a class can be accessed from its derived class",
+              "e": "None of the above"
+          },
+          "_quizId": "5f1cc728671d9165b0ee2f64"
+      },
+      {
+          "question": "The fields in an interface are implicitly specified as: ",
+          "type": "Select Single",
+          "media": "None",
+          "_id": "5f1bd0e3e2cd9639d08da12b",
+          "answers": {
+              "a": "static only",
+              "b": "protected",
+              "c": "private",
+              "d": "both static and final",
+              "e": "None of the above"
+          },
+          "_quizId": "5f1cc728671d9165b0ee2f64"
+      },
+      {
+          "question": "Among these expressions, which is(are) of type String? ",
+          "type": "Select Single",
+          "media": "None",
+          "_id": "5f1bd2f1e2cd9639d08da12c",
+          "answers": {
+              "a": "\"0\"",
+              "b": "\"ab\" + \"cd\"",
+              "c": "'0'",
+              "d": "Both (a) and (b) above",
+              "e": "(a), (b), and (c) above"
+          },
+          "_quizId": "5f1cc728671d9165b0ee2f64"
+      },
+      {
+          "question": "To prevent any method from overriding, we declare the method as:",
+          "type": "Select Single",
+          "media": "None",
+          "_id": "5f1bd357e2cd9639d08da12d",
+          "answers": {
+              "a": "static",
+              "b": "const",
+              "c": "final",
+              "d": "abstract",
+              "e": "None of the above"
+          },
+          "_quizId": "5f1cc728671d9165b0ee2f64"
+      },
+      {
+          "question": "Which of the following is not true?",
+          "type": "Select Single",
+          "media": "None",
+          "_id": "5f1bd3ece2cd9639d08da12e",
+          "answers": {
+              "a": "A class containing abstract methods is called an abstract class",
+              "b": "Abstract methods should be implemented in the derived class",
+              "c": "An abstract class cannot have non-abstract methods",
+              "d": "A class must be qualified as 'abstract' class, if it contains one abstract method",
+              "e": "None of the above"
+          },
+          "_quizId": "5f1cc728671d9165b0ee2f64"
+      },
+      {
+          "question": "Which of the following is not true?",
+          "type": "Select Single",
+          "media": "None",
+          "_id": "5f1bd4afe2cd9639d08da12f",
+          "answers": {
+              "a": "An interface can extend another interface",
+              "b": "A class which is implementing an interface must implement all the methods of the interface",
+              "c": "An interface can implement another interface",
+              "d": "An interface is a solution for mutliple inheritance in java",
+              "e": "None of the above"
+          },
+          "_quizId": "5f1cc728671d9165b0ee2f64"
+      },
+      {
+          "question": "Which of the following is true?",
+          "type": "Select Single",
+          "media": "None",
+          "_id": "5f1bd558e2cd9639d08da130",
+          "answers": {
+              "a": "A finally block is executed before the catch block but after the try block",
+              "b": "A finally block is executed, only after the catch block is executed",
+              "c": "A finally block is executed whether an exception is thrown or not",
+              "d": "A finally block is executed only if an exception occurs",
+              "e": "None of the above"
+          },
+          "_quizId": "5f1cc728671d9165b0ee2f64"
+      },
+      {
+          "question": "Which of the following variable declarations would NOT compile in a java program?",
+          "type": "Select Single",
+          "media": "None",
+          "_id": "5f1bd658e2cd9639d08da131",
+          "answers": {
+              "a": "int var;",
+              "b": "int VAR",
+              "c": "int var1;",
+              "d": "int var_1;",
+              "e": "int 1_var;"
+          },
+          "_quizId": "5f1cc728671d9165b0ee2f64"
+      }
+  ]
+}

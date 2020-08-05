@@ -55,9 +55,9 @@ const useStyles = makeStyles((theme) => ({
   resultsLabel: {
     position: 'absolute',
     top: '35%',
-    left: '16%',
+    left: '18%',
     textAlign: 'center',
-    maxWidth: '350px',
+    width: '325px',
   },
 
   chart: {

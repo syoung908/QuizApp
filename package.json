@@ -4,9 +4,12 @@
   "description": "Udemy Quiz WebApp",
   "main": "index.js",
   "scripts": {
-    "mintest": "./node_modules/.bin/mocha --reporter min --exit",
-    "test": "./node_modules/.bin/mocha --exit",
-    "start": "node app.js & webpack-dev-server --open --mode development",
+    "test": "jest --watchAll  --runInBand --detectOpenHandles --env=node",
+    "test-api": "jest ./test/integration_tests/api --env=node --watchAll",
+    "test-stores": "jest ./test/unit_tests/stores --watchAll",
+    "test-ui": "jest ./test/integration_tests/ui --watchAll",
+    "test-util": "jest ./test/unit_tests/util --watchAll",
+    "start": "node app.js",
     "build": "webpack --mode production"
   },
   "repository": {
@@ -25,16 +28,16 @@
     "@material-ui/icons": "^4.9.1",
     "@svgr/webpack": "^5.4.0",
     "abortcontroller-polyfill": "^1.5.0",
-    "chai": "^4.2.0",
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
     "es6-promise": "^4.2.8",
     "express": "^4.17.1",
     "isomorphic-fetch": "^2.2.1",
     "mobx": "^5.15.4",
     "mobx-react": "^6.2.5",
     "mobx-react-lite": "^2.0.7",
-    "mocha": "^8.0.1",
     "mongoose": "^5.9.25",
     "mongoose-keywords": "^0.4.1",
     "morgan": "^1.10.0",
@@ -50,7 +53,6 @@
     "react-vis": "^1.11.7",
     "react-waypoint": "^9.0.3",
     "regenerator-runtime": "^0.13.7",
-    "supertest": "^4.0.2",
     "webpack-dev-server": "^3.11.0"
   },
   "devDependencies": {
@@ -61,9 +63,18 @@
     "babel-loader": "^8.1.0",
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.3.0",
+    "jest": "^26.2.2",
+    "jest-fetch-mock": "^3.0.3",
     "react-svg-loader": "^3.0.3",
+    "supertest": "^4.0.2",
     "svg-inline-loader": "^0.8.2",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12"
+  },
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "./setupJest.js"
+    ]
   }
 }

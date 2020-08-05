@@ -21,7 +21,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import {useSearchStore} from "../../stores/searchStore";
 import {useObserver} from "mobx-react";
 
-export default function SearchBar(props) {
+export default function SearchBar() {
   const searchStore = useSearchStore();
 
   // Handles any user input events from the user.
@@ -32,7 +32,7 @@ export default function SearchBar(props) {
   // Clears the search bar and queries all quizzes instead
   const clearSearchBar = () => {
     searchStore.searchText = "";
-    props.fetchQuizzes();
+    searchStore.fetchQuizzes();
   }
 
   // Performs query when enter is pressed
@@ -40,7 +40,7 @@ export default function SearchBar(props) {
     if (event.keyCode === 13) {
       event.preventDefault();
       event.target.blur();
-      props.fetchQuizzes();
+      searchStore.fetchQuizzes();
     } 
   }
 

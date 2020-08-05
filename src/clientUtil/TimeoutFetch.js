@@ -45,7 +45,6 @@ export const timeoutFetch = (url, method, postbody, timeout = 30000) => {
 
   const fetchPromise = (postbody)
     ? fetch(url, {
-        crossDomain: true,
         method: 'POST', 
         body: JSON.stringify(postbody), 
         signal: signal,

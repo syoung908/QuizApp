@@ -86,6 +86,10 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
     textAlign: 'center',
   },
+  emptyContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
   buttonPanel: {
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
@@ -228,21 +232,23 @@ export default function QuizUI() {
    * to load any queries
    */
   const emptyQuizPanel = (
-    <Card className={classes.emptyPanel} variant={'outlined'}>
-      <CardHeader
-        title={'No Questions Found'}
-      />
-      <CardContent style={{height: '100%'}}>
-        <Typography variant="h6">
-          No questions were found in our database for this quiz. <br/>
-          Either an error has occurred
-          or there are no questions for this quiz yet.
-        </Typography>
-      </CardContent>
-      <CardActions className={classes.buttonPanel}>
-        {HomeButton}
-      </CardActions>
-  </Card>
+    <div className={classes.emptyContainer}>
+      <Card className={classes.emptyPanel} variant={'outlined'}>
+        <CardHeader
+          title={'No Questions Found'}
+        />
+        <CardContent style={{height: '100%'}}>
+          <Typography variant="h6">
+            No questions were found in our database for this quiz. <br/>
+            Either an error has occurred
+            or there are no questions for this quiz yet.
+          </Typography>
+        </CardContent>
+        <CardActions className={classes.buttonPanel}>
+          {HomeButton}
+        </CardActions>
+    </Card>
+  </div>
   );
 
   return useObserver(() => (
@@ -274,7 +280,7 @@ export default function QuizUI() {
       </Drawer>
       
       <div className={clsx(classes.content, {
-            [classes.contentShift]: open,
+            [classes.contentShift]: quizStore.length !== 0,
           })}
       >
         {quizStore.length !== 0 && <SwipeableViews

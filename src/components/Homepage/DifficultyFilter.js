@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function DifficultyFilter(props) {
+export default function DifficultyFilter() {
   const classes = useStyles();
 
   const searchStore = useSearchStore();
@@ -78,9 +78,10 @@ export default function DifficultyFilter(props) {
             label={value}
             size="small"
             key={value}
+            aria-label={`${value}-button`}
             onClick={()=> {
               searchStore.toggleDifficulty(value);
-              props.fetchQuizzes();
+              searchStore.fetchQuizzes();
             }}
             style={{
               backgroundColor: ((searchStore.difficultyFilter[value]) 
