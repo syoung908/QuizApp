@@ -25,6 +25,7 @@ Once a user selects a quiz they can take the quiz with a UI that allows the user
 
 ### View Results
 Once the user completes the quiz, they can submit the quiz to the server to be graded. The results will be displayed top the user after a successful request.
+
 ![Results](https://media.giphy.com/media/efUdkE1JJwl3XGKL85/giphy.gif)
 
 ## Built With
