@@ -99,7 +99,7 @@ These tests mount components from that utilize the MobX stores and then verify t
 2. Display which questions the user got right and wrong and any corrections to be made. (The backend already supports this).
 3. Frontend and Backend support for storing user scores, calculating a user's rank based on how their score compares to other users/previous attempts.
 4. More real quizzes - Only 2 real quizzes are in the database, the rest are randomly generated quiz-stubs used for testing the inifinite scrolling, querying, and filtering.
-5. 
+
 ## Deployment
 
 Requires Node.js and npm to be installed on the system.
